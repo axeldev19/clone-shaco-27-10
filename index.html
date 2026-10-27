@@ -211,16 +211,7 @@
     overflow: hidden;
     text-align: left;
   }
-  .ticker::before, .ticker::after {
-    content: "";
-    position: absolute; left: 0; right: 0; height: 16px;
-    z-index: 2; pointer-events: none;
-  }
-  .ticker::before { top: 0; background: linear-gradient(#fffaf2, rgba(255, 250, 242, 0)); }
-  .ticker::after { bottom: 0; background: linear-gradient(rgba(255, 246, 234, 0), #fff5e8); }
-
-  .ticker-track { animation: scrollUp 24s linear infinite; will-change: transform; }
-  .ticker:hover .ticker-track { animation-play-state: paused; }
+  .ticker-track { will-change: transform; padding: 6px 12px; }
 
   .ticker-group { padding: 6px 12px; }
 
@@ -249,8 +240,6 @@
   .act { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; font-weight: 700; color: var(--green); }
   .act b { font-weight: 900; color: var(--red-deep); }
   .when { flex: none; font-size: 10px; font-weight: 600; color: #b09a86; }
-
-  @keyframes scrollUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
 
   /* ---------- xác nhận 18+ ---------- */
   .confirm {
@@ -388,7 +377,6 @@
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
-    .ticker-track { animation: none; }
   }
 </style>
 </head>
@@ -471,73 +459,26 @@
     <div class="ticker-label"><span class="live"></span> Người chơi vừa nhận thưởng</div>
 
     <div class="ticker" id="ticker">
-      <div class="ticker-track">
+      <div class="ticker-track" id="tickerTrack"></div>
+      <noscript>
         <div class="ticker-group">
           <div class="ticker-item">
-            <span class="who">quangdong...</span>
-            <span class="act">Vừa Nhận Thưởng Đăng Ký <b>88k</b></span>
-            <span class="when">1p trước</span>
-          </div>
-          <div class="ticker-item">
-            <span class="who">Babui575...</span>
-            <span class="act">Vừa Nhận Thưởng Nạp <b>188k</b></span>
-            <span class="when">1p trước</span>
-          </div>
-          <div class="ticker-item">
-            <span class="who">monk1102...</span>
-            <span class="act">Vừa Nhận Thưởng Nạp <b>288K</b></span>
-            <span class="when">1p trước</span>
-          </div>
-          <div class="ticker-item">
-            <span class="who">nvtv2007...</span>
-            <span class="act">Vừa Nhận Thưởng Đăng Ký <b>88k</b></span>
-            <span class="when">2p trước</span>
-          </div>
-          <div class="ticker-item">
-            <span class="who">Phanphung...</span>
-            <span class="act">Vừa Nhận Thưởng Nạp <b>188k</b></span>
-            <span class="when">2p trước</span>
-          </div>
-          <div class="ticker-item">
             <span class="who">hoangphuc...</span>
+            <span class="act">Vừa Nhận Thưởng Đăng Ký <b>88k</b></span>
+            <span class="when">1p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">tuananh92...</span>
+            <span class="act">Vừa Nhận Thưởng Nạp <b>188k</b></span>
+            <span class="when">2p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">linhchi88...</span>
             <span class="act">Vừa Nhận Thưởng Nạp <b>288K</b></span>
             <span class="when">3p trước</span>
           </div>
         </div>
-
-        <div class="ticker-group" aria-hidden="true">
-          <div class="ticker-item">
-            <span class="who">quangdong...</span>
-            <span class="act">Vừa Nhận Thưởng Đăng Ký <b>88k</b></span>
-            <span class="when">1p trước</span>
-          </div>
-          <div class="ticker-item">
-            <span class="who">Babui575...</span>
-            <span class="act">Vừa Nhận Thưởng Nạp <b>188k</b></span>
-            <span class="when">1p trước</span>
-          </div>
-          <div class="ticker-item">
-            <span class="who">monk1102...</span>
-            <span class="act">Vừa Nhận Thưởng Nạp <b>288K</b></span>
-            <span class="when">1p trước</span>
-          </div>
-          <div class="ticker-item">
-            <span class="who">nvtv2007...</span>
-            <span class="act">Vừa Nhận Thưởng Đăng Ký <b>88k</b></span>
-            <span class="when">2p trước</span>
-          </div>
-          <div class="ticker-item">
-            <span class="who">Phanphung...</span>
-            <span class="act">Vừa Nhận Thưởng Nạp <b>188k</b></span>
-            <span class="when">2p trước</span>
-          </div>
-          <div class="ticker-item">
-            <span class="who">hoangphuc...</span>
-            <span class="act">Vừa Nhận Thưởng Nạp <b>288K</b></span>
-            <span class="when">3p trước</span>
-          </div>
-        </div>
-      </div>
+      </noscript>
     </div>
 
     <label class="confirm" for="age">
@@ -565,6 +506,137 @@
     // true = mở tab mới, false = mở cùng tab
     newTab: false
   };
+  /* ========================================================= */
+
+  /* =========================================================
+     TICKER — data fake tự sinh liên tục, chạy vô hạn, không lặp
+     (mỗi dòng cuộn qua là 1 data mới, không trùng trang mẫu)
+     ========================================================= */
+  (function () {
+    var track = document.getElementById('tickerTrack');
+    if (!track) return;
+
+    // 60 nickname — không trùng tên với trang mẫu, đổi/thêm tùy ý
+    var NAMES = [
+      'hoangphuc', 'tuananh92', 'linhchi88', 'minhquan7x', 'dangkhoa14',
+      'thuylinh99', 'vietdung86', 'hoangnam2k', 'phuongthao7', 'trungkien88',
+      'ngocdiep2k', 'duyhung92', 'maianh96', 'quocthai07', 'haiminh88',
+      'thanhtung9x', 'vankhoa2k1', 'baongoc88', 'huonggiang9', 'sonpixi',
+      'nguyenvu88', 'dinhkhang2k', 'thanhha99', 'quannguyen9', 'tranduy2k',
+      'phamkhoa88', 'levuong9x', 'buianh96', 'dohung2k1', 'vuongphat',
+      'ngocanh9x', 'minhtri88', 'hoangyen2k', 'ducmanh07', 'thanhdat99',
+      'kimngan88', 'huutai9x', 'congthanh2k', 'vanhieu88', 'trungduc99',
+      'nguyenthu2k', 'quangvinh7x', 'phuongnam88', 'thuydung9x', 'manhtuan2k',
+      'hainguyen99', 'bichtram88', 'tuankiet07', 'thanhphong9', 'ngocmai2k',
+      'minhduc99', 'hoanghuy88', 'vietanh2k', 'sonthanh9x', 'kimlien88',
+      'ducthang2k1', 'quocbao99', 'anhkhoa07', 'thuonghieu9x', 'phucnguyen2k'
+    ];
+
+    // Nội dung thưởng — 3 dòng theo yêu cầu
+    var REWARDS = [
+      { action: 'Vừa Nhận Thưởng Đăng Ký', amount: '88k' },
+      { action: 'Vừa Nhận Thưởng Nạp', amount: '188k' },
+      { action: 'Vừa Nhận Thưởng Nạp', amount: '288K' }
+    ];
+
+    var TIMES = [
+      'vừa xong', 'vài giây trước', '30 giây trước',
+      '1p trước', '1p trước', '2p trước', '2p trước', '3p trước',
+      '4p trước', '5p trước', '6p trước', '7p trước', '8p trước',
+      '9p trước', '10p trước', '12p trước', '15p trước'
+    ];
+
+    var VISIBLE_ITEMS = 12; // số dòng giữ trong DOM (đủ lấp khung)
+    var SPEED = 24;         // tốc độ cuộn (px/giây)
+    var RECENT_MAX = 40;    // không lặp tên trong 40 dòng gần nhất
+
+    var recentNames = [];
+
+    function pick(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    // chống trùng tên: random nhưng né 40 tên vừa xuất hiện
+    function pickName() {
+      var name = pick(NAMES);
+      for (var i = 0; i < 30 && recentNames.indexOf(name) !== -1; i++) {
+        name = pick(NAMES);
+      }
+      recentNames.push(name);
+      if (recentNames.length > RECENT_MAX) recentNames.shift();
+      return name;
+    }
+
+    function makeItem() {
+      var reward = pick(REWARDS);
+
+      var item = document.createElement('div');
+      item.className = 'ticker-item';
+
+      var who = document.createElement('span');
+      who.className = 'who';
+      who.textContent = pickName() + '...';
+
+      var act = document.createElement('span');
+      act.className = 'act';
+      act.appendChild(document.createTextNode(reward.action + ' '));
+
+      var amount = document.createElement('b');
+      amount.textContent = reward.amount;
+      act.appendChild(amount);
+
+      var when = document.createElement('span');
+      when.className = 'when';
+      when.textContent = pick(TIMES);
+
+      item.appendChild(who);
+      item.appendChild(act);
+      item.appendChild(when);
+      return item;
+    }
+
+    function fill() {
+      track.innerHTML = '';
+      var frag = document.createDocumentFragment();
+      for (var i = 0; i < VISIBLE_ITEMS; i++) frag.appendChild(makeItem());
+      track.appendChild(frag);
+    }
+
+    fill();
+
+    // Người dùng bật "giảm chuyển động" -> giữ danh sách tĩnh
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+
+    var offset = 0;
+    var lastTs = 0;
+
+    function step(ts) {
+      if (!lastTs) lastTs = ts;
+      // giới hạn dt để tab bị treo không làm nhảy dòng
+      var dt = Math.min((ts - lastTs) / 1000, 0.1);
+      lastTs = ts;
+
+      offset += SPEED * dt;
+
+      // dòng đầu cuộn hết -> xoá nó, chèn data fake mới ở cuối
+      // => chạy vô hạn, mỗi dòng chỉ xuất hiện 1 lần, không lặp
+      var first = track.firstElementChild;
+      while (first) {
+        var firstH = first.getBoundingClientRect().height || 33;
+        if (offset < firstH) break;
+        offset -= firstH;
+        track.removeChild(first);
+        track.appendChild(makeItem());
+        first = track.firstElementChild;
+      }
+
+      track.style.transform = 'translate3d(0,' + (-offset).toFixed(2) + 'px,0)';
+      window.requestAnimationFrame(step);
+    }
+
+    window.requestAnimationFrame(step);
+  })();
   /* ========================================================= */
 
   var checkbox = document.getElementById('age');

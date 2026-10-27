@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Cổng Quà Tặng VIP — Đăng Ký Nhận Thưởng</title>
+<meta name="description" content="Chào mừng đến với Cổng Quà Tặng VIP. Đăng ký hội viên mới, nhận thưởng ngay hôm nay." />
+<meta name="theme-color" content="#fff6ec" />
+<meta property="og:title" content="Cổng Quà Tặng VIP — Đăng Ký Nhận Thưởng" />
+<meta property="og:description" content="Ưu đãi hội viên mới: đăng ký nhanh, nhận thưởng liền tay." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%81%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #2a2338;
+    --ink-soft: #6b6076;
+    --red: #ef233c;
+    --red-deep: #d31b33;
+    --orange: #ff7a18;
+    --gold: #ffb01f;
+    --gold-deep: #e89700;
+    --green: #0b9450;
+    --blue: #1a6fe0;
+    --shadow: 0 26px 60px rgba(223, 128, 74, .20), 0 4px 14px rgba(223, 128, 74, .10);
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
+    font-family: 'Be Vietnam Pro', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(42rem 42rem at 8% -6%, rgba(255, 193, 64, .34), transparent 62%),
+      radial-gradient(46rem 46rem at 104% 8%, rgba(255, 45, 85, .18), transparent 60%),
+      radial-gradient(54rem 40rem at 50% 112%, rgba(255, 138, 0, .22), transparent 64%),
+      linear-gradient(165deg, #fffaF3 0%, #fff0f2 46%, #fff8e6 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ---------- trang trí nền ---------- */
+  .bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+
+  .spark {
+    position: absolute;
+    width: 18px; height: 18px;
+    background: linear-gradient(135deg, #ffd977, #ffb01f);
+    clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+    opacity: .55;
+    animation: drift 9s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(255, 176, 31, .5));
+  }
+  .spark.s1 { top: 12%; left: 12%; width: 22px; height: 22px; animation-delay: -1s; }
+  .spark.s2 { top: 22%; right: 14%; width: 14px; height: 14px; opacity: .45; animation-delay: -3.5s; }
+  .spark.s3 { bottom: 18%; left: 18%; width: 16px; height: 16px; opacity: .4; animation-delay: -6s; }
+  .spark.s4 { bottom: 10%; right: 12%; width: 26px; height: 26px; opacity: .5; animation-delay: -2.2s; }
+
+  @keyframes drift {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    50% { transform: translate3d(6px, -14px, 0) scale(1.12) rotate(18deg); }
+  }
+
+  .halo {
+    position: absolute; left: 50%; top: 18%;
+    width: 340px; height: 340px; margin-left: -170px;
+    background: radial-gradient(circle, rgba(255, 200, 90, .55) 0%, rgba(255, 200, 90, 0) 70%);
+    filter: blur(6px);
+    opacity: .55;
+    animation: breathe 6s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%, 100% { transform: scale(.94); opacity: .42; } 50% { transform: scale(1.06); opacity: .62; } }
+
+  /* ---------- thẻ chính ---------- */
+  .card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 418px;
+    padding: 26px 22px 20px;
+    border-radius: 30px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(255, 252, 247, .88));
+    border: 1px solid rgba(255, 255, 255, .95);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    text-align: center;
+    animation: cardIn .55s cubic-bezier(.22, .9, .3, 1) both;
+  }
+  .card::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(150deg, rgba(255, 214, 122, .95), rgba(255, 255, 255, 0) 35%, rgba(255, 138, 0, .55));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(18px) scale(.985); } to { opacity: 1; transform: none; } }
+
+  /* ---------- badge ---------- */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ffe27a, #ffbc2e 62%, #ffa200);
+    color: #7a3b00;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: .9px;
+    text-transform: uppercase;
+    border: 1px solid #ffe9a8;
+    box-shadow: 0 8px 18px rgba(255, 176, 31, .35), inset 0 1px 0 rgba(255, 255, 255, .8);
+    margin-bottom: 4px;
+  }
+  .badge svg { width: 14px; height: 14px; flex: none; }
+
+  /* ---------- quà ---------- */
+  .gift {
+    position: relative;
+    width: 96px; height: 96px;
+    margin: 10px auto 8px;
+    display: flex; align-items: center; justify-content: center;
+    animation: float 3.6s ease-in-out infinite;
+  }
+  .gift svg { width: 100%; height: 100%; filter: drop-shadow(0 12px 18px rgba(255, 154, 0, .32)); }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+
+  /* ---------- tiêu đề ---------- */
+  .title {
+    margin: 2px 0 6px;
+    font-size: 20px;
+    line-height: 1.28;
+    font-weight: 900;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    color: #332a44;
+  }
+  .title .accent {
+    display: block;
+    margin-top: 2px;
+    font-size: 25px;
+    letter-spacing: .2px;
+    background: linear-gradient(100deg, #ef233c 0%, #ff5a1f 42%, #ff8a00 62%, #ef233c 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: shine 4.5s linear infinite;
+    filter: drop-shadow(0 3px 6px rgba(239, 35, 60, .16));
+  }
+  @keyframes shine { to { background-position: 200% center; } }
+
+  .subtitle {
+    margin: 0 auto 16px;
+    max-width: 320px;
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- ticker ---------- */
+  .ticker-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .2px;
+    color: #b25a3c;
+  }
+  .ticker-label .live {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #ff3b30;
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, .55);
+    animation: pulse 1.8s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, .5); }
+    70% { box-shadow: 0 0 0 8px rgba(255, 59, 48, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
+  }
+
+  .ticker {
+    position: relative;
+    height: 108px;
+    margin: 0 0 16px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #fffdfa, #fff6ea);
+    border: 1px solid #ffe2bf;
+    box-shadow: inset 0 1px 0 #fff, 0 8px 20px rgba(232, 151, 0, .10);
+    overflow: hidden;
+    text-align: left;
+  }
+  .ticker::before, .ticker::after {
+    content: "";
+    position: absolute; left: 0; right: 0; height: 16px;
+    z-index: 2; pointer-events: none;
+  }
+  .ticker::before { top: 0; background: linear-gradient(#fffaf2, rgba(255, 250, 242, 0)); }
+  .ticker::after { bottom: 0; background: linear-gradient(rgba(255, 246, 234, 0), #fff5e8); }
+
+  .ticker-track { animation: scrollUp 24s linear infinite; will-change: transform; }
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+
+  .ticker-group { padding: 6px 12px; }
+
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 7px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #f0dbc4;
+    font-size: 12px;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+  .ticker-group .ticker-item:last-child { border-bottom: 0; }
+
+  .who {
+    flex: none;
+    max-width: 78px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 800;
+    color: var(--blue);
+  }
+  .act { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; font-weight: 700; color: var(--green); }
+  .act b { font-weight: 900; color: var(--red-deep); }
+  .when { flex: none; font-size: 10px; font-weight: 600; color: #b09a86; }
+
+  @keyframes scrollUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+
+  /* ---------- xác nhận 18+ ---------- */
+  .confirm {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 14px;
+    padding: 12px 13px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid #ffe0c7;
+    box-shadow: 0 6px 16px rgba(232, 151, 0, .08);
+    text-align: left;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .confirm:hover { border-color: #ffc98f; }
+  .confirm input {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    width: 21px; height: 21px;
+    margin: 0;
+    border: 2px solid #ffc06a;
+    border-radius: 7px;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+    transition: background .18s, border-color .18s, transform .12s;
+  }
+  .confirm input:active { transform: scale(.92); }
+  .confirm input:checked {
+    background: linear-gradient(135deg, #ff5a1f, #ef233c);
+    border-color: #ef233c;
+  }
+  .confirm input:checked::after {
+    content: "";
+    position: absolute;
+    left: 6px; top: 2px;
+    width: 5px; height: 10px;
+    border: solid #fff;
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+  }
+  .confirm input:focus-visible { outline: 2px solid #ff8a00; outline-offset: 2px; }
+  .confirm span { font-size: 12.5px; font-weight: 700; line-height: 1.42; color: #4a3b34; }
+
+  /* ---------- nút ---------- */
+  .btn {
+    position: relative;
+    width: 100%;
+    padding: 17px 18px;
+    border: 0;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 15.5px;
+    font-weight: 900;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    background: linear-gradient(95deg, #ff2d55 0%, #ff5a1f 48%, #ffa200 100%);
+    box-shadow: 0 16px 30px rgba(255, 77, 32, .34), inset 0 1px 0 rgba(255, 255, 255, .35);
+    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    isolation: isolate;
+  }
+  .btn::after {
+    content: "";
+    position: absolute;
+    top: -60%; bottom: -60%; left: -40%;
+    width: 34%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .55), rgba(255, 255, 255, 0));
+    transform: skewX(-18deg);
+    animation: sweep 3.2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes sweep {
+    0% { left: -45%; }
+    55%, 100% { left: 125%; }
+  }
+  .btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 20px 36px rgba(255, 77, 32, .40), inset 0 1px 0 rgba(255, 255, 255, .35); }
+  .btn:not(:disabled):active { transform: translateY(0); filter: brightness(.97); }
+  .btn:focus-visible { outline: 3px solid #ffb01f; outline-offset: 3px; }
+  .btn:disabled {
+    background: linear-gradient(180deg, #eee7de, #e6ddd2);
+    color: #ab9f92;
+    cursor: not-allowed;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 6px 14px rgba(180, 150, 120, .12);
+  }
+  .btn:disabled::after { display: none; }
+  .btn.is-loading { pointer-events: none; }
+  .btn.is-loading::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(95deg, #ff2d55, #ff8a00);
+    z-index: -1;
+  }
+  .btn .dots { display: inline-flex; gap: 3px; margin-left: 7px; vertical-align: 2px; }
+  .btn .dots i { width: 4px; height: 4px; border-radius: 50%; background: #fff; opacity: .35; animation: dot 1s infinite; }
+  .btn .dots i:nth-child(2) { animation-delay: .15s; }
+  .btn .dots i:nth-child(3) { animation-delay: .3s; }
+  @keyframes dot { 0%, 100% { opacity: .25; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-2px); } }
+
+  .note {
+    margin: 10px 2px 0;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #a3937f;
+  }
+
+  .footer {
+    margin: 16px 0 2px;
+    padding-top: 12px;
+    border-top: 1px dashed #f0dfcc;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ab9a88;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 380px) {
+    .card { padding: 22px 16px 16px; border-radius: 26px; }
+    .title { font-size: 18px; }
+    .title .accent { font-size: 22px; }
+    .gift { width: 82px; height: 82px; }
+    .btn { font-size: 14.5px; padding: 16px; }
+  }
+
+  @media (min-width: 720px) {
+    .card { max-width: 430px; padding: 32px 28px 24px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+    .ticker-track { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg" aria-hidden="true">
+    <div class="halo"></div>
+    <span class="spark s1"></span>
+    <span class="spark s2"></span>
+    <span class="spark s3"></span>
+    <span class="spark s4"></span>
+  </div>
+
+  <main class="card">
+    <div class="badge">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2.5l2.6 6.1L21 11l-6.4 2.4L12 19.5 9.4 13.4 3 11l6.4-2.4L12 2.5z" fill="#fff" opacity=".95"/>
+      </svg>
+      Ưu đãi hội viên mới
+    </div>
+
+    <div class="gift" aria-hidden="true">
+      <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffe9a3" />
+            <stop offset=".45" stop-color="#ffcb45" />
+            <stop offset="1" stop-color="#ffab00" />
+          </linearGradient>
+          <linearGradient id="gRed" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ff6a7f" />
+            <stop offset="1" stop-color="#e8172f" />
+          </linearGradient>
+          <linearGradient id="gLid" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fff0b8" />
+            <stop offset=".5" stop-color="#ffd15c" />
+            <stop offset="1" stop-color="#ffb304" />
+          </linearGradient>
+          <radialGradient id="gSpark" cx=".5" cy=".5" r=".5">
+            <stop offset="0" stop-color="#fff6cf" />
+            <stop offset="1" stop-color="#ffb01f" />
+          </radialGradient>
+        </defs>
+
+        <ellipse cx="48" cy="88" rx="23" ry="4.4" fill="#ffab00" opacity=".18" />
+
+        <!-- thân hộp -->
+        <rect x="24.5" y="45" width="47" height="35" rx="6.5" fill="url(#gGold)" />
+        <rect x="24.5" y="45" width="47" height="35" rx="6.5" fill="none" stroke="#e08d00" stroke-opacity=".28" />
+        <rect x="43" y="45" width="10" height="35" fill="url(#gRed)" />
+        <rect x="43" y="45" width="3" height="35" fill="#ff8a9c" opacity=".45" />
+
+        <!-- nắp hộp -->
+        <rect x="18" y="34" width="60" height="16.5" rx="7.5" fill="url(#gLid)" />
+        <rect x="18" y="34" width="60" height="16.5" rx="7.5" fill="none" stroke="#e08d00" stroke-opacity=".24" />
+        <rect x="41.5" y="34" width="13" height="16.5" fill="url(#gRed)" />
+        <rect x="41.5" y="34" width="3.6" height="16.5" fill="#ff8a9c" opacity=".45" />
+
+        <!-- nơ -->
+        <path d="M48 35c-7-9-17-8.6-17.5-3.6-.4 5 9.6 5.6 17.5 3.6z" fill="url(#gRed)" />
+        <path d="M48 35c7-9 17-8.6 17.5-3.6.4 5-9.6 5.6-17.5 3.6z" fill="url(#gRed)" />
+        <path d="M48 35c-3.6-6.2-8.2-6.6-8.5-3.2-.2 2.9 4.4 3.6 8.5 3.2z" fill="#ff97a6" opacity=".55" />
+        <circle cx="48" cy="35.4" r="3.5" fill="#ffdf8a" stroke="#e8172f" stroke-width="1.5" />
+
+        <!-- lấp lánh -->
+        <path d="M79 24.5l1.7 4.1 4.1 1.7-4.1 1.7-1.7 4.1-1.7-4.1-4.1-1.7 4.1-1.7 1.7-4.1z" fill="url(#gSpark)" />
+        <path d="M15.5 47.5l1.2 2.9 2.9 1.2-2.9 1.2-1.2 2.9-1.2-2.9-2.9-1.2 2.9-1.2 1.2-2.9z" fill="url(#gSpark)" opacity=".8" />
+        <circle cx="76" cy="49" r="2" fill="#ffd15c" />
+        <circle cx="22" cy="27" r="1.6" fill="#ffd15c" />
+      </svg>
+    </div>
+
+    <h1 class="title">
+      Chào mừng đến với
+      <span class="accent">Cổng Quà Tặng VIP</span>
+    </h1>
+
+    <p class="subtitle">Đăng ký hội viên mới để nhận ưu đãi độc quyền ngay hôm nay.</p>
+
+    <div class="ticker-label"><span class="live"></span> Người chơi vừa nhận thưởng</div>
+
+    <div class="ticker" id="ticker">
+      <div class="ticker-track">
+        <div class="ticker-group">
+          <div class="ticker-item">
+            <span class="who">quangdong...</span>
+            <span class="act">Vừa Nhận Thưởng Đăng Ký <b>88k</b></span>
+            <span class="when">1p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">Babui575...</span>
+            <span class="act">Vừa Nhận Thưởng Nạp <b>188k</b></span>
+            <span class="when">1p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">monk1102...</span>
+            <span class="act">Vừa Nhận Thưởng Nạp <b>288K</b></span>
+            <span class="when">1p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">nvtv2007...</span>
+            <span class="act">Vừa Nhận Thưởng Đăng Ký <b>88k</b></span>
+            <span class="when">2p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">Phanphung...</span>
+            <span class="act">Vừa Nhận Thưởng Nạp <b>188k</b></span>
+            <span class="when">2p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">hoangphuc...</span>
+            <span class="act">Vừa Nhận Thưởng Nạp <b>288K</b></span>
+            <span class="when">3p trước</span>
+          </div>
+        </div>
+
+        <div class="ticker-group" aria-hidden="true">
+          <div class="ticker-item">
+            <span class="who">quangdong...</span>
+            <span class="act">Vừa Nhận Thưởng Đăng Ký <b>88k</b></span>
+            <span class="when">1p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">Babui575...</span>
+            <span class="act">Vừa Nhận Thưởng Nạp <b>188k</b></span>
+            <span class="when">1p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">monk1102...</span>
+            <span class="act">Vừa Nhận Thưởng Nạp <b>288K</b></span>
+            <span class="when">1p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">nvtv2007...</span>
+            <span class="act">Vừa Nhận Thưởng Đăng Ký <b>88k</b></span>
+            <span class="when">2p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">Phanphung...</span>
+            <span class="act">Vừa Nhận Thưởng Nạp <b>188k</b></span>
+            <span class="when">2p trước</span>
+          </div>
+          <div class="ticker-item">
+            <span class="who">hoangphuc...</span>
+            <span class="act">Vừa Nhận Thưởng Nạp <b>288K</b></span>
+            <span class="when">3p trước</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <label class="confirm" for="age">
+      <input type="checkbox" id="age" />
+      <span>Tôi xác nhận đủ 18 tuổi và đồng ý nhận khuyến mãi.</span>
+    </label>
+
+    <button id="cta" class="btn" type="button" disabled>ĐĂNG KÝ NGAY</button>
+
+    <p class="note">Ưu đãi chỉ dành cho hội viên mới trong hôm nay</p>
+
+    <p class="footer">© 2026 Gift Center. Bảo mật tuyệt đối.</p>
+  </main>
+
+<script>
+  /* =========================================================
+     CẤU HÌNH — chỉ cần sửa ở đây
+     ========================================================= */
+  var CONFIG = {
+    // Link đài (đích đến khi khách bấm "ĐĂNG KÝ NGAY")
+    destination: 'https://aerialskylab.com/wap/#/register',
+    // Mã của bạn — tự động gắn vào link dạng ?code=...
+    // Để trống '' nếu không muốn gắn mã
+    promoCode: '',
+    // true = mở tab mới, false = mở cùng tab
+    newTab: false
+  };
+  /* ========================================================= */
+
+  var checkbox = document.getElementById('age');
+  var cta = document.getElementById('cta');
+
+  function buildUrl() {
+    var url = CONFIG.destination;
+    if (!CONFIG.promoCode) return url;
+    var sep = url.indexOf('?') === -1 ? '?' : '&';
+    return url + sep + 'code=' + encodeURIComponent(CONFIG.promoCode);
+  }
+
+  function isInAppBrowser() {
+    var ua = navigator.userAgent || '';
+    return /FBAN|FBAV|FB_IAB|Instagram|TikTok|Bytedance|Zalo/i.test(ua);
+  }
+
+  function goToRegister() {
+    var url = buildUrl();
+    var isAndroid = /android/i.test(navigator.userAgent);
+
+    // Trong app TikTok/Facebook trên Android: mở thẳng bằng Chrome
+    // (webview của app thường chặn đăng ký / thanh toán)
+    if (isAndroid && isInAppBrowser()) {
+      var intent = 'intent://' + url.replace(/^https?:\/\//, '') +
+        '#Intent;scheme=https;package=com.android.chrome;' +
+        'S.browser_fallback_url=' + encodeURIComponent(url) + ';end';
+      window.location.href = intent;
+      setTimeout(function () { window.location.href = url; }, 1200);
+      return;
+    }
+
+    if (CONFIG.newTab) {
+      window.open(url, '_blank', 'noopener');
+    } else {
+      window.location.href = url;
+    }
+  }
+
+  checkbox.addEventListener('change', function () {
+    cta.disabled = !checkbox.checked;
+  });
+
+  cta.addEventListener('click', function () {
+    if (cta.disabled) return;
+    cta.classList.add('is-loading');
+    cta.innerHTML = 'ĐANG CHUYỂN HƯỚNG<span class="dots"><i></i><i></i><i></i></span>';
+    goToRegister();
+  });
+
+  // fallback: nếu link bị chặn, mở tab mới
+  window.addEventListener('blur', function () {
+    if (cta.classList.contains('is-loading')) {
+      cta.classList.remove('is-loading');
+      cta.innerHTML = 'ĐĂNG KÝ NGAY';
+    }
+  });
+</script>
+</body>
+</html>

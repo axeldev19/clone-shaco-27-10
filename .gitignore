@@ -1,0 +1,5 @@
+# Thư mục tạm khi làm việc (không đưa lên git)
+ref/
+tools/
+*.log
+*.zip
